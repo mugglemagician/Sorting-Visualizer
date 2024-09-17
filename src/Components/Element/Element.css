@@ -1,5 +1,9 @@
 .element {
-    width: 3px;
+    width: 10px;
     background-color: #86D293;
     margin-top: auto;
+}
+
+.comparing {
+    background-color: red;
 }

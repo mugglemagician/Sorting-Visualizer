@@ -3,6 +3,8 @@
     padding: 0;
     list-style: none;
     text-decoration: none;
+    font-family: 'Poppins', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    box-sizing: border-box;
 }
 
 body {
@@ -14,6 +16,18 @@ body {
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.button {
+    padding: 10px 20px;
+    font-size: larger;
+    font-weight: 700;
+    border-radius: 10px;
+    border: none;
+    background-color: #1ABC9C;
+    color: #FFF;
+    cursor: pointer;
 }
