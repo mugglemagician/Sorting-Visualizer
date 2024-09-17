@@ -1,7 +1,8 @@
+import React from "react";
 import { ElementPropType } from "../../types";
 import "./Element.css";
 
-export default function Element({ value, comparing }: ElementPropType) {
+function Element({ value, comparing }: ElementPropType) {
 
     const extraClass = comparing ? 'comparing' : '';
 
@@ -9,3 +10,5 @@ export default function Element({ value, comparing }: ElementPropType) {
         <div className={`element ${extraClass}`} style={{ height: `${value}px` }}></div>
     )
 }
+
+export default React.memo(Element);

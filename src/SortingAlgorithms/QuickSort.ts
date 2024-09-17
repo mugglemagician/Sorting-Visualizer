@@ -9,9 +9,15 @@ const partition = (left: number, right: number, array: number[], animations: num
 
     while (i < j) {
         while (i < j && array[i] <= pivot) {
+            animations.push([left, i]);
+            animations.push([left, i]);
+            animations.push([-1, -1]);
             i++;
         }
         while (j >= i && array[j] > pivot) {
+            animations.push([left, j]);
+            animations.push([left, j]);
+            animations.push([-1, -1]);
             j--;
         }
         if (i < j) {

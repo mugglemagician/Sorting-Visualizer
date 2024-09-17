@@ -1,0 +1,53 @@
+.dropDown {
+    position: relative;
+    height: 100%;
+    color: #FFF8F3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.dropDownList {
+    border-radius: 8px;
+    margin-top: 5px;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    background-color: #405D72;
+    padding: 5px 10px;
+    z-index: 10;
+}
+
+
+
+.dropDown h2 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: medium;
+}
+
+.dropDownLabel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 15px;
+    height: 100%;
+}
+
+.dropDownLabel:hover {
+    color: #1ABC9C;
+}
+
+.dropDownLabel:active {
+    background-color: #1ABC9C;
+    color: #FFF8F3;
+}

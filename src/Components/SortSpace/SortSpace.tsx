@@ -7,20 +7,32 @@ const getRandomValue = (min: number, max: number): number => {
     return min + Math.floor(Math.random() * (max + 1));
 }
 
-const generateArray = () => {
+const generateArray = (arraySize: number) => {
     const array: number[] = [];
-    for (let i = 0; i < 200; i++) {
-        array.push(getRandomValue(5, 700));
+    for (let i = 0; i < arraySize; i++) {
+        array.push(getRandomValue(20, 700));
     }
     return array;
 }
 
-export default function SortSpace({ algo, startAlgo, toggleStartAlgo }: SortSpacePropType) {
-    const [array, setArray] = useState<number[]>(() => generateArray());
+export default function SortSpace({ algo, startAlgo, toggleStartAlgo, arraySize, generateNewArray, toggleGenerateNewArray }: SortSpacePropType) {
+    const [array, setArray] = useState<number[]>(() => generateArray(arraySize));
     const comparingIdx1 = useRef<number>(-1);
     const comparingIdx2 = useRef<number>(-1);
+    const prevArraySize = useRef<number>(arraySize);
 
     useEffect(() => {
+
+        if (generateNewArray) {
+            setArray(generateArray(arraySize));
+            toggleGenerateNewArray();
+        }
+
+        if (prevArraySize.current !== arraySize) {
+            prevArraySize.current = arraySize;
+            setArray(generateArray(arraySize));
+        }
+
         if (startAlgo) {
             const animations = algo.fn([...array]);
             for (let i = 0; i < animations.length; i++) {
@@ -28,6 +40,7 @@ export default function SortSpace({ algo, startAlgo, toggleStartAlgo }: SortSpac
                     setArray(prevArr => {
                         const idx01 = animations[i][0];
                         const idx02 = animations[i][1];
+                        if (idx01 === -1 && idx02 === -1) return prevArr;
                         const newArr = [...prevArr];
                         if (i % 3 == 0) {
                             comparingIdx1.current = idx01;
@@ -38,21 +51,27 @@ export default function SortSpace({ algo, startAlgo, toggleStartAlgo }: SortSpac
                             comparingIdx2.current = -1;
                         }
                         else {
-                            let temp = newArr[idx01];
-                            newArr[idx01] = newArr[idx02]
-                            newArr[idx02] = temp;
+                            if (!algo.isMergeSort) {
+                                let temp = newArr[idx01];
+                                newArr[idx01] = newArr[idx02]
+                                newArr[idx02] = temp;
+                            }
+                            else {
+                                newArr[idx01] = idx02;
+                            }
                         }
 
                         return newArr;
                     });
-                }, i * 10);
+                }, i * Math.floor(1000 / arraySize));
             }
 
             setTimeout(() => {
                 toggleStartAlgo();
-            }, animations.length * 10 + 100);
+            }, animations.length * Math.floor(1000 / arraySize) + 100);
         }
-    }, [startAlgo]);
+
+    }, [startAlgo, arraySize, generateNewArray]);
 
     return (
         <div className="sortSpace">

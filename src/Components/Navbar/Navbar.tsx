@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { NavbarPropType } from "../../types";
 import "./Navbar.css";
+import DropDown from "../DropDown/DropDown";
+import { algorithms } from "../Utils";
 
-export default function Navbar({ algoId, updateAlgo, startAlgo, toggleStartAlgo }: NavbarPropType) {
+export default function Navbar({ algoId, updateAlgo, startAlgo, toggleStartAlgo, updateArraySize, toggleGenerateNewArray }: NavbarPropType) {
 
     const [buttonText, setButtonText] = useState("Visualize");
+    const [rangeValue, setRangeValue] = useState<number>(100);
 
     useEffect(() => {
-        if (!startAlgo) {
-            setButtonText("Visualize");
+        if (!startAlgo && algoId !== -1) {
+            setButtonText(`Visualize ${algorithms[algoId].name}`);
         }
     }, [startAlgo])
 
@@ -18,7 +21,7 @@ export default function Navbar({ algoId, updateAlgo, startAlgo, toggleStartAlgo 
             setButtonText("Pick Algorithm !");
         }
         else {
-            setButtonText(`Visualizing`);
+            setButtonText(`Visualizing ${algorithms[algoId].name}`);
             toggleStartAlgo();
         }
     }
@@ -26,7 +29,18 @@ export default function Navbar({ algoId, updateAlgo, startAlgo, toggleStartAlgo 
     const handleSelect = (id: number) => {
         if (startAlgo) return;
         updateAlgo(id);
-        setButtonText("Visualize");
+        setButtonText(`Visualize ${algorithms[id].name}`);
+    }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (startAlgo) return;
+        setRangeValue(parseInt(e.target.value));
+        updateArraySize(parseInt(e.target.value));
+    }
+
+    const handleGenerate = () => {
+        if (startAlgo) return;
+        toggleGenerateNewArray();
     }
 
     return (
@@ -39,34 +53,20 @@ export default function Navbar({ algoId, updateAlgo, startAlgo, toggleStartAlgo 
                     </h1>
                 </li>
 
-                <li className="nav-item" onClick={() => handleSelect(0)}>
-                    <h3>
-                        Merge Sort
-                    </h3>
+                <DropDown
+                    dropDownLabel="Algorithms"
+                    dropDownWidth="250px"
+                    elements={["Merge Sort", "Insertion Sort", "Quick Sort", "Bubble Sort", "Heap Sort"]}
+                    selectItem={handleSelect} />
+
+
+                <li className="array-size">
+                    <label htmlFor="arraySize">array size and speed</label>
+                    <input type="range" min={5} max={400} id="arraySize" value={rangeValue} onChange={handleChange} />
                 </li>
 
-                <li className="nav-item" onClick={() => handleSelect(1)}>
-                    <h3>
-                        Bubble Sort
-                    </h3>
-                </li>
-
-                <li className="nav-item" onClick={() => handleSelect(2)}>
-                    <h3>
-                        Insertion Sort
-                    </h3>
-                </li>
-
-                <li className="nav-item" onClick={() => handleSelect(3)}>
-                    <h3>
-                        Heap Sort
-                    </h3>
-                </li>
-
-                <li className="nav-item" onClick={() => handleSelect(4)}>
-                    <h3>
-                        Quick Sort
-                    </h3>
+                <li>
+                    <button className="button" onClick={handleGenerate}>Generate New Array</button>
                 </li>
 
                 <li>
